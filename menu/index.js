@@ -1,4 +1,4 @@
-const socket = io("http://localhost:7777");
+const socket = io("https://menu.aif.uz");
 
 
 /*
