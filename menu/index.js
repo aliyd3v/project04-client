@@ -1,14 +1,16 @@
-const socket = io("https://menu.aif.uz");
+const socket = io("https://api.aif.uz");
 
 
 /*
     ELEMENTS
 */
 
+const token = localStorage.getItem('token')
 let cart = JSON.parse(localStorage.getItem('cart')) || [] // Cart item in localStorage
 let Categories   // Categories from real-time api
 let items = []
 let table = localStorage.getItem('table')   // Table for ordering (if exist)
+let orderBtn = document.querySelector('.order-btn')
 
 const menuDiv = document.getElementById('menu')
 const cartDiv = document.getElementById('cartItems')
@@ -78,7 +80,7 @@ function renderMenu(Categories) {
     if (!cart.length) {
         document.querySelector('.clear-btn').classList.add('hidden')
         if (table) {
-            document.querySelector('.order-btn').classList.add('hidden')
+            orderBtn.classList.add('hidden')
         }
     }
 
@@ -165,18 +167,35 @@ function renderCart() {
 // Open cart popup
 function openCart() {
     if (table && cart.length) {
-        document.querySelector('.order-btn').classList.remove('hidden')
+        orderBtn.classList.remove('hidden')
     }
     document.getElementById("cartOverlay").style.display = "block";
     document.getElementById("cartPopup").style.display = "block";
-    document.querySelector('.clear-btn').addEventListener('click', event => {
+    document.querySelector('.clear-btn').addEventListener('click', e => {
+        e.preventDefault();
+
         cart = []
         localStorage.removeItem('cart')
         cartDiv.innerHTML = ''
         document.querySelector('.clear-btn').classList.add('hidden')
         renderMenu(Categories)
     })
-    renderMenu(Categories)
+    orderBtn.addEventListener('click', e => {
+        e.preventDefault();
+
+        if (table && token && cart.length) {
+
+            socket.emit('create-order', { token, table, cart })
+            cart = []
+            localStorage.setItem('cart', JSON.stringify(cart))
+            window.location.href = '../success.html'
+
+        } else {
+            return alert('Bad request!')
+        }
+    })
+
+    // renderMenu(Categories)
 }
 
 // Close cart popup
