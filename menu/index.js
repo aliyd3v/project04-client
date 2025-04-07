@@ -1,4 +1,4 @@
-const socket = io("https://api.aif.uz");
+const socket = io("http://localhost:7777");
 
 
 /*
@@ -77,6 +77,9 @@ function renderMenu(Categories) {
 
     if (!cart.length) {
         document.querySelector('.clear-btn').classList.add('hidden')
+        if (table) {
+            document.querySelector('.order-btn').classList.add('hidden')
+        }
     }
 
     renderCart()
@@ -161,7 +164,7 @@ function renderCart() {
 
 // Open cart popup
 function openCart() {
-    if (table) {
+    if (table && cart.length) {
         document.querySelector('.order-btn').classList.remove('hidden')
     }
     document.getElementById("cartOverlay").style.display = "block";
