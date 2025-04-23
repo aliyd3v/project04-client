@@ -2,7 +2,7 @@ const socket = io("https://api.aif.uz");
 
 
 /*
-    ELEMENTS
+ELEMENTS
 */
 
 const token = localStorage.getItem('token')
@@ -11,10 +11,20 @@ let Categories   // Categories from real-time api
 let items = []
 let table = localStorage.getItem('table')   // Table for ordering (if exist)
 let orderBtn = document.querySelector('.order-btn')
+let cartBtn = document.getElementById('cart-btn')
+let tableNumber = document.querySelector('.table-number')
 
 const menuDiv = document.getElementById('menu')
 const cartDiv = document.getElementById('cartItems')
 
+if (table) {
+    if (Number(table) != NaN) {
+        if (Number(table) > 0) {
+            tableNumber.innerHTML = `<div>Table ${table}</div>`
+            tableNumber.classList.remove('hidden')
+        }
+    }
+}
 
 
 /*
@@ -82,6 +92,10 @@ function renderMenu(Categories) {
         if (table) {
             orderBtn.classList.add('hidden')
         }
+        cartBtn.innerHTML = `🛒`
+    } else {
+        cartBtn.innerHTML = `
+        <i id="cart-item-amount" class="badge" value=${cart.length}></i>🛒`
     }
 
     renderCart()
@@ -190,12 +204,8 @@ function openCart() {
             localStorage.setItem('cart', JSON.stringify(cart))
             window.location.href = '../success.html'
 
-        } else {
-            return alert('Bad request!')
         }
     })
-
-    // renderMenu(Categories)
 }
 
 // Close cart popup
