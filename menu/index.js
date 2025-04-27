@@ -75,9 +75,9 @@ function renderMenu(Categories) {
                                     </div>
                                     <button class="btn ${cartItem ? 'hidden' : ''}" onclick="addToCart(${meal.id})">+</button>
                                     <div class="counter-container ${cartItem ? '' : 'hidden'}">
-                                        <button onclick="incriminate(${meal.id})">+</button>
-                                        <span>${cartItem ? cartItem.quantity : 0}</span>
-                                        <button onclick="decriminate(${meal.id})">-</button>
+                                    <button onclick="decriminate(${meal.id})">-</button>
+                                    <span>${cartItem ? cartItem.quantity : 0}</span>
+                                    <button onclick="incriminate(${meal.id})">+</button>
                                     </div>
                                 </div>`;
 
@@ -92,6 +92,7 @@ function renderMenu(Categories) {
         if (table) {
             orderBtn.classList.add('hidden')
         }
+        cartBtn.innerHTML = `<i id="cart-item-amount" class="fa-solid fa-receipt"></i>`
     } else {
         cartBtn.innerHTML = `<i id="cart-item-amount" class="fa-solid fa-receipt badge" value=${cart.length}></i>`
     }
