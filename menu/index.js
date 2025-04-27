@@ -92,10 +92,8 @@ function renderMenu(Categories) {
         if (table) {
             orderBtn.classList.add('hidden')
         }
-        cartBtn.innerHTML = `🛒`
     } else {
-        cartBtn.innerHTML = `
-        <i id="cart-item-amount" class="badge" value=${cart.length}></i>🛒`
+        cartBtn.innerHTML = `<i id="cart-item-amount" class="fa-solid fa-receipt badge" value=${cart.length}></i>`
     }
 
     renderCart()
@@ -175,6 +173,9 @@ function renderCart() {
     if (changed) {
         localStorage.setItem('cart', JSON.stringify(cart))
         renderMenu(Categories)
+    }
+    if (!cart.length) {
+        cartDiv.innerHTML = "<h3 class='cart-title-empty'>Hozircha buyurtmalar yo'q . . .</h3>"
     }
 }
 
